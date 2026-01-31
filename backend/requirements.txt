@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+sqlalchemy
+psycopg2-binary
+python-multipart
+google-cloud-speech
+weasyprint
+transformers
+torch
+keybert
