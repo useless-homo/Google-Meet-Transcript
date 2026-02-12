@@ -1,0 +1,1 @@
+ Software is a collection of programs and it tells a computer system what to do and how to do. It's a combination of programs, user interface and documentation.

@@ -1,19 +1,27 @@
-from weasyprint import HTML
+import os
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.units import inch
 
-def generate_pdf(meeting, transcript, summary):
-    html = f"""
-    <h1>{meeting}</h1>
-    <h2>Summary</h2>
-    <p>{summary['summary']}</p>
 
-    <h3>Action Items</h3>
-    <ul>
-      {''.join(f'<li>{a}</li>' for a in summary['action_items'])}
-    </ul>
+def generate_pdf(text, audio_path):
+    os.makedirs("pdfs", exist_ok=True)
 
-    <h3>Transcript</h3>
-    <p>{transcript}</p>
-    """
+    base_name = os.path.splitext(os.path.basename(audio_path))[0]
+    pdf_path = f"pdfs/{base_name}_transcript.pdf"
 
-    HTML(string=html).write_pdf("output.pdf")
-    return "output.pdf"
+    doc = SimpleDocTemplate(pdf_path)
+    elements = []
+
+    styles = getSampleStyleSheet()
+
+    elements.append(Paragraph("Meeting Transcript", styles["Heading1"]))
+    elements.append(Spacer(1, 0.3 * inch))
+
+    for line in text.split("\n"):
+        elements.append(Paragraph(line, styles["Normal"]))
+        elements.append(Spacer(1, 0.2 * inch))
+
+    doc.build(elements)
+
+    return pdf_path
